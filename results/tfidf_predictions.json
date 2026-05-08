@@ -1,0 +1,37 @@
+[
+  {
+    "question": "What is supply and demand?",
+    "answer": "Supply and demand means prices go up when things are scarce.",
+    "true_label": "Shallow",
+    "predicted": "Shallow",
+    "prob_deep": 0.072
+  },
+  {
+    "question": "What is the Pythagorean theorem?",
+    "answer": "The Pythagorean theorem states that in a right-angled triangle, the square of the hypotenuse equals the sum of squares of the other two sides: a\u00b2 + b\u00b2 = c\u00b2. It is used to calculate distances in geometry, navigation, and physics.",
+    "true_label": "Deep",
+    "predicted": "Deep",
+    "prob_deep": 0.959
+  },
+  {
+    "question": "What is osmosis?",
+    "answer": "Osmosis is the passive movement of water molecules across a semi-permeable membrane from a region of lower solute concentration to higher solute concentration, driven by the concentration gradient until equilibrium is reached.",
+    "true_label": "Deep",
+    "predicted": "Deep",
+    "prob_deep": 0.982
+  },
+  {
+    "question": "Explain Newton's second law.",
+    "answer": "Newton's second law states that the net force on an object equals mass times acceleration (F=ma). This means a heavier object requires more force for the same acceleration. If net force is zero, the object moves at constant velocity \u2014 which underpins inertia.",
+    "true_label": "Deep",
+    "predicted": "Deep",
+    "prob_deep": 0.965
+  },
+  {
+    "question": "What is the Pythagorean theorem?",
+    "answer": "a squared plus b squared equals c squared.",
+    "true_label": "Shallow",
+    "predicted": "Shallow",
+    "prob_deep": 0.09
+  }
+]

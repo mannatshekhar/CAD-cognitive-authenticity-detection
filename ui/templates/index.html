@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAD — Cognitive Authenticity Detection</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div>
+      <div class="logo">CAD</div>
+      <div class="logo-sub">Cognitive Authenticity<br>Detection</div>
+    </div>
+    <nav>
+      <span class="nav-label">Workspace</span>
+      <button class="nav-btn active" onclick="showPage('analyse', this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="6.5" cy="6.5" r="4"/><path d="M10.5 10.5L14 14"/></svg>
+        Analyse answer
+      </button>
+      <button class="nav-btn" onclick="showPage('about', this)">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5.5v.5"/></svg>
+        About CAD
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      Team CerebraX · v1.0<br>
+      GUS metric prototype<br>
+      Model: <span id="model-badge">{{ model_type }}</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <span class="topbar-title">Genuine Understanding Score Engine</span>
+      <div class="badges">
+        <span class="badge badge-green"><span class="dot"></span> Active</span>
+        <span class="badge badge-gray">BERT + Bayesian</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ANALYSE PAGE -->
+      <div id="page-analyse" class="page active">
+        <div class="stats">
+          <div class="stat-card">
+            <span class="stat-label">Analyses this session</span>
+            <div class="stat-value" id="s-count">0</div>
+            <div class="stat-sub">answers evaluated</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Deep understanding</span>
+            <div class="stat-value green" id="s-deep">—</div>
+            <div class="stat-sub">of answers flagged</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Avg GUS score</span>
+            <div class="stat-value" id="s-avg">—</div>
+            <div class="stat-sub">across session</div>
+          </div>
+        </div>
+
+        <div class="input-card">
+          <div class="card-head">
+            <span class="card-title">New evaluation</span>
+            <span class="card-desc">Paste a question and student answer below</span>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>Subject</label>
+              <select id="subject">
+                <option>Biology</option><option>Physics</option><option>Chemistry</option>
+                <option>Mathematics</option><option>Computer Science</option>
+                <option>History</option><option>Geography</option><option>Economics</option><option>General</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Grade / Level</label>
+              <select id="grade">
+                <option>Secondary (Grade 9–10)</option><option>Secondary (Grade 11–12)</option>
+                <option>Undergraduate Year 1–2</option><option>Undergraduate Year 3–4</option><option>Postgraduate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>Time Spent (seconds) — optional</label>
+              <input type="number" id="time_spent" placeholder="e.g. 45" min="0">
+            </div>
+            <div class="field">
+              <label>Number of Edits — optional</label>
+              <input type="number" id="edits" placeholder="e.g. 2" min="0">
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:14px">
+            <label>Question</label>
+            <input type="text" id="question" placeholder="e.g. Explain how photosynthesis works and why it is important to life on Earth.">
+          </div>
+
+          <div class="field">
+            <label>Student Answer</label>
+            <textarea id="answer" placeholder="Paste the student's written answer here..."></textarea>
+          </div>
+
+          <div class="samples-row">
+            <button class="sample-btn" onclick="loadSample('deep-bio')">Deep Biology</button>
+            <button class="sample-btn" onclick="loadSample('shallow-bio')">Shallow Biology</button>
+            <button class="sample-btn" onclick="loadSample('deep-phys')">Deep Physics</button>
+            <button class="sample-btn" onclick="loadSample('shallow-phys')">Shallow Physics</button>
+          </div>
+
+          <div class="btn-row">
+            <button class="analyse-btn" id="abtn" onclick="runAnalysis()">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6.5" cy="6.5" r="4"/><path d="M10.5 10.5L14 14"/></svg>
+              Analyse answer
+            </button>
+            <button class="clear-btn" onclick="clearForm()">Clear</button>
+          </div>
+          <div class="loading-bar" id="lb"><div class="loading-fill" id="lf"></div></div>
+          <div class="loading-msg" id="lm"></div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="result-card" id="result-card">
+          <div class="card-head" style="margin-bottom:20px">
+            <span class="card-title">Analysis result</span>
+          </div>
+
+          <div class="gus-block" id="gus-block">
+            <div class="gus-circle">
+              <div class="gus-num" id="gus-num">—</div>
+              <div class="gus-micro">GUS</div>
+            </div>
+            <div>
+              <div class="verdict-big" id="v-big">—</div>
+              <div class="verdict-note" id="v-note">—</div>
+              <div style="margin-top:8px"><span class="badge" id="v-badge">—</span></div>
+            </div>
+          </div>
+
+          <div class="metrics">
+            <div class="mc"><div class="mc-name">Semantic depth</div><div class="mc-val" id="m0">—</div><div class="bar-track"><div class="bar-fill" id="b0" style="width:0%"></div></div></div>
+            <div class="mc"><div class="mc-name">Conceptual links</div><div class="mc-val" id="m1">—</div><div class="bar-track"><div class="bar-fill" id="b1" style="width:0%"></div></div></div>
+            <div class="mc"><div class="mc-name">Confidence est.</div><div class="mc-val" id="m2">—</div><div class="bar-track"><div class="bar-fill" id="b2" style="width:0%"></div></div></div>
+            <div class="mc"><div class="mc-name">Lexical richness</div><div class="mc-val" id="m3">—</div><div class="bar-track"><div class="bar-fill" id="b3" style="width:0%"></div></div></div>
+          </div>
+
+          <div class="card-head" style="margin-bottom:12px"><span class="card-title">Signals detected</span></div>
+          <div class="signals" id="signals"></div>
+
+          <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+            <div class="card-head" style="margin-bottom:10px"><span class="card-title">Educator recommendation</span></div>
+            <div class="rec-box" id="rec"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT PAGE -->
+      <div id="page-about" class="page">
+        <div class="input-card">
+          <div style="font-family:Georgia,serif;font-size:24px;font-style:italic;margin-bottom:8px">Cognitive Authenticity Detection</div>
+          <p style="font-size:13px;color:var(--text2);font-weight:300;line-height:1.7;max-width:560px">CAD analyses how student answers are constructed — measuring semantic richness, conceptual linkage, and confidence signals — to produce a Genuine Understanding Score (GUS) instead of a binary right/wrong judgment.</p>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <span class="badge badge-green">GUS metric</span>
+            <span class="badge badge-gray">TF-IDF + BERT</span>
+            <span class="badge badge-gray">Bayesian calibration</span>
+          </div>
+        </div>
+        <div class="about-grid">
+          <div class="ac"><h3>The problem</h3><p>Students often memorise correct answers without genuine understanding. Standard graders check keywords or correctness — not cognitive depth.</p></div>
+          <div class="ac"><h3>Our solution</h3><p>CAD combines NLP (TF-IDF baseline, BERT fine-tune) with a Bayesian confidence wrapper and handcrafted linguistic features to score reasoning depth.</p></div>
+          <div class="ac"><h3>GUS score</h3><p>0–100 score: semantic depth (40%), conceptual links (30%), lexical richness (15%), Bayesian confidence (15%). Above 70 = Deep; 40–70 = Moderate; below 40 = Shallow.</p></div>
+          <div class="ac"><h3>Tech stack</h3><p>Python 3.9 · scikit-learn · HuggingFace Transformers · PyTorch · Flask. Local inference only — no student data leaves the server.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>

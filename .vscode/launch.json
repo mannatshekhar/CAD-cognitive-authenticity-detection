@@ -1,0 +1,54 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Train TF-IDF",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/train.py",
+      "args": ["--model", "tfidf", "--data", "data/answers.csv"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Train BERT",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/train.py",
+      "args": ["--model", "bert", "--data", "data/answers.csv"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Run Inference (sample)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/infer.py",
+      "args": [
+        "--model", "tfidf",
+        "--answer", "Photosynthesis converts light energy into glucose via the Calvin cycle.",
+        "--question", "What is photosynthesis?"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Run Flask App",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/ui/app.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": { "CAD_MODEL": "tfidf", "FLASK_DEBUG": "1" }
+    },
+    {
+      "name": "Batch Inference on CSV",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/infer.py",
+      "args": ["--model", "tfidf", "--csv", "data/answers.csv", "--output", "results/batch_predictions.csv"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

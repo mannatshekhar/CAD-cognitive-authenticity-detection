@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install dependencies",
+      "type": "shell",
+      "command": "pip install -r requirements.txt",
+      "group": "build",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Train TF-IDF model",
+      "type": "shell",
+      "command": "python src/train.py --model tfidf",
+      "group": "build",
+      "presentation": { "reveal": "always" }
+    },
+    {
+      "label": "Train all models",
+      "type": "shell",
+      "command": "python src/train.py --model all",
+      "group": "build"
+    },
+    {
+      "label": "Start Flask server",
+      "type": "shell",
+      "command": "python ui/app.py",
+      "group": "test",
+      "presentation": { "reveal": "always" },
+      "isBackground": true
+    },
+    {
+      "label": "Run demo inference",
+      "type": "shell",
+      "command": "python src/infer.py --model tfidf --answer \"Photosynthesis converts light energy to glucose via the Calvin cycle in chloroplasts.\"",
+      "group": "test"
+    },
+    {
+      "label": "Docker build",
+      "type": "shell",
+      "command": "docker build -t cad-app .",
+      "group": "build"
+    },
+    {
+      "label": "Docker run",
+      "type": "shell",
+      "command": "docker run -p 5000:5000 cad-app",
+      "group": "test"
+    }
+  ]
+}
