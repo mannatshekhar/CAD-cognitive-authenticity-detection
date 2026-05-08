@@ -1,15 +1,11 @@
-# CAD — Cognitive Authenticity Detection
-# Core
 numpy>=1.24.0
 pandas>=2.0.0
 scikit-learn>=1.3.0
 scipy>=1.11.0
 joblib>=1.3.0
 
-# NLP / Transformers (for BERT model)
 transformers>=4.35.0
 torch>=2.0.0
-# If CPU-only: pip install torch --index-url https://download.pytorch.org/whl/cpu
 
 # Web UI
 flask>=3.0.0
@@ -21,5 +17,3 @@ matplotlib>=3.7.0
 jupyter>=1.0.0
 ipykernel>=6.0.0
 
-# Optional: GPU support
-# torch --index-url https://download.pytorch.org/whl/cu118
